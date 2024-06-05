@@ -1,0 +1,74 @@
+ <div class="share-buttons-container">
+  <div class="share-list">
+    {%- for block in section.blocks -%}
+  {%- case block.type -%}
+    {%- when 'productshare' -%}
+
+    {% if block.settings.facebook == true %}
+      <!-- FACEBOOK -->
+      <a class="fb-h" onclick="return fbs_click()" target="_blank">
+        {% if block.settings.facebook_icon != blank %}
+          <img src="{{ block.settings.facebook_icon | image_url: width: 32 }}" width="" height="">
+        {% endif %}  
+      </a>
+    {% endif %}
+    
+    {% if block.settings.twitter == true %}
+    <!-- TWITTER -->
+    <a class="tw-h" onclick="return tbs_click()"  target="_blank">
+      {% if block.settings.twitter_icon != blank %}
+        <img src="{{ block.settings.twitter_icon | image_url: width: 32}}" width="" height="">
+      {% endif %}
+    </a>
+    {% endif %}
+    
+    {% if block.settings.linkedin == true %}
+    <!-- LINKEDIN -->
+    <a class="li-h" onclick="return lbs_click()"  target="_blank">
+      {% if block.settings.linkedin_icon != blank %}
+        <img src="{{ block.settings.linkedin_icon | image_url: width: 32 }}" width="" height="">
+      {% endif %}
+    </a>
+    {% endif %}
+    
+    {% if block.settings.pinterest == true %}
+      <!-- PINTEREST -->
+      <a data-pin-do="buttonPin" data-pin-config="none" class="pi-h" onclick="return pbs_click()" target="_blank">
+      {% if block.settings.pinterest_icon != blank %}
+        <img src="{{ block.settings.pinterest_icon | image_url: width: 32 }}" width="" height="">
+      {% endif %}
+      </a>
+    {% endif %}
+    
+   {% endcase %} 
+{% endfor %}
+    
+
+  </div>
+</div>
+<style>
+  .share-list {
+  display: flex;
+  flex-direction: row;
+}
+
+.share-list a {
+  border-radius: 100px;
+  padding: 7px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+</style>
+<script>
+var pageLink = window.location.href;
+var pageTitle = String(document.title).replace(/\&/g, '%26');
+
+function fbs_click() { window.open(`http://www.facebook.com/sharer.php?u=${pageLink}&quote=${pageTitle}`,'sharer','toolbar=0,status=0,width=626,height=436');return false; }
+      
+function tbs_click() { window.open(`https://twitter.com/intent/tweet?text=${pageTitle}&url=${pageLink}`,'sharer','toolbar=0,status=0,width=626,height=436');return false; }
+
+function lbs_click() { window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${pageLink}`,'sharer','toolbar=0,status=0,width=626,height=436');return false; }
+
+function pbs_click() { window.open(`https://www.pinterest.com/pin/create/button/?&text=${pageTitle}&url=${pageLink}&description=${pageTitle}`,'sharer','toolbar=0,status=0,width=626,height=436');return false; }
+</script>

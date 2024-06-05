@@ -1,0 +1,280 @@
+{{ 'collage.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-modal-video.css' | asset_url | stylesheet_tag }}
+{{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+.information_feature h2{color:{{ section.settings.heading_color }};margin: 0;font-size:24px;}
+.information_feature h3{color:{{ section.settings.heading_color }};margin: 0;font-size:12px;}
+.information_feature p{color:{{ section.settings.text_color }};padding: 10px 0 15px;margin: 0;font-size:16px;}
+.small-boxs-side .information_feature h2 {padding-bottom: 15px;}
+.information_feature a{color:{{ section.settings.link_color }};text-decoration: none;}  
+ 
+  .image-and-text-box a:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, {{ settings.link_hover_color }} 100%);
+  z-index: 1;
+}
+
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+
+<section class="common-section homeFeatured-section bg-white  color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding custom-collarge">
+            <div class="container ">
+                <div class="commonSecHead anim fadeInUp">
+                    {% if section.settings.heading != blank %}
+                    <h2>{{ section.settings.heading }}</h2>
+                     {% endif %} 
+                    {% if section.settings.view_all_text != blank %}
+                      <a href="{{ section.settings.view_all_url }}" class="viewAll-btn">{{ section.settings.view_all_text }} <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="none"><script xmlns=""/><path d="M1.75391 1.9056L5.83724 5.98893L1.75391 10.0723" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg></a>
+                    {% endif %} 
+                </div>
+                <div class="commonSeContent">
+                    <ul class="featuredProduct-list list-unstyled grid-gap-20 grid-gap-xxl-30">
+                       {% if section.settings.big_image %}
+                        <li>
+                            <div class="productCard anim fadeInUp">
+                                <div class="productCard-thumb">
+                                    <picture>
+                                      {% if section.settings.big_image %}
+                                         <img class="lazy"  data-src="{{ section.settings.big_image | image_url }}" src="{{ section.settings.big_image | image_url }}" width="" height="" alt="Featured Product One"/> 
+                                        {% else %}
+                                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                      {% endif %}
+                                        
+                                    </picture>
+                                </div>
+                                <div class="productCard-body">
+                                    {% if section.settings.big_image_title %}
+                                      <h3 class="title">{{ section.settings.big_image_title }}</h3>
+                                    {% endif %}
+                                    {% if section.settings.big_image_text %}
+                                      <p>{{ section.settings.big_image_text }}</p>
+                                    {% endif %}
+                                    {% if section.settings.big_image_btn_text %}
+                                      <a href="{{ section.settings.big_image_btn_link }}" class="shopNow-btn"> 
+                                        {% if section.settings.big_image_btn_text %}
+                                         {{ section.settings.big_image_btn_text }}
+                                        {% endif %}
+                                      </a>
+                                   {% endif %}
+                                 
+                                </div>
+                            </div>
+                        </li>
+                      {% endif %}
+
+                      {%- for block in section.blocks -%}
+                         {% if block.settings.image %}
+                        <li>
+                            <div class="productCard anim fadeInUp">
+                                <div class="productCard-thumb">
+                                    <picture>
+                                      {% if block.settings.image %}
+                                        <img class="lazy" src="{{ block.settings.image  | image_url }}" data-src="{{ block.settings.image  | image_url }}" width="" height=""  alt="Featured Product ">
+                                      {% else %}
+                                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                       {% endif %}
+                                    </picture>
+                                </div>
+                                <div class="productCard-body">
+                                    {% if block.settings.image_title %}
+                                      <h3 class="title">{{ block.settings.image_title }}</h3>
+                                    {% endif %}
+                                   {% if block.settings.image_title_discrition %}
+                                    <p>{{ block.settings.image_title_discrition }}</p>
+                                    {% endif %}
+                                  {% if block.settings.small_image_btn_text != blank %} 
+                                    <a href="{{ block.settings.small_image_btn_link }}" class="shopNow-btn">{{ block.settings.small_image_btn_text }}</a>
+                                  {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                       {% endif %}
+                      {% endfor %}
+                        
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        
+
+
+{% schema %}
+{
+  "name": "Featured Products Collage",
+  "tag": "section",
+  "class": "section",
+ "disabled_on": {
+    "groups": ["header", "footer"] 
+  },
+  "settings": [
+     {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "FEATURED PRODUCTS",
+      "label": "t:sections.collage.settings.heading.label"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "default": "#FFFFFF",
+      "label": "t:sections.collage.settings.heading.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#FFFFFF",
+      "label": "t:sections.collage.settings.heading.label"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "default": "#FFFFFF",
+      "label": "t:sections.collage.settings.heading.label"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View All"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "default": "View All",
+      "label": "View All"
+    },
+    {
+      "type": "header",
+      "content": "Big Image Side"
+    },
+    {
+      "type": "image_picker",
+      "id": "big_image",
+      "label": "Select Big Image"
+    },
+    {
+      "type": "text",
+      "id": "big_image_title",
+      "default": "Commodo consequat",
+      "label": "Add Big Title"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "big_image_text",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit .",
+      "label": "Add Big Text"
+    },
+    {
+      "type": "text",
+      "id": "big_image_btn_text",
+      "label": "Add Big Btn Text"
+    },
+    {
+      "type": "url",
+      "id": "big_image_btn_link",
+      "label": "Add Big Btn Link"
+    },
+   
+    
+    {
+      "type": "header",
+      "content": "Small Image Side"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+     {
+       "name": "Small Images Section",
+       "type": "column",
+       "settings": [
+         {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Image"
+         },
+         {
+           "type": "text",
+           "id": "image_title",
+           "label": "Image Title"
+         },
+         {
+           "type": "text",
+           "id": "image_title_discrition",
+           "label": "Image Contant"
+         },
+         {
+          "type": "text",
+          "id": "small_image_btn_text",
+          "label": "Add Small Btn Text"
+        },
+        {
+          "type": "url",
+          "id": "small_image_btn_link",
+          "label": "Add Small Btn Link"
+        }
+   
+       ]
+     }
+  ],
+  
+  
+  "presets": [
+    {
+      "name": "Featured Products Collage",
+      "blocks": [
+       
+      ]
+    }
+  ]
+}
+{% endschema %}

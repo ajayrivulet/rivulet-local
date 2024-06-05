@@ -1,0 +1,54 @@
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+      {%- when 'deliveryavailability' -%}
+      {%- assign datalist = block.settings.listofpincodes  -%}
+   {% endcase %} 
+{% endfor %}
+
+<div class="delivery-availability">
+   <div class="heading_box"><h5>Check Availability</h5></div>
+    <div class="availability-box">
+        <input type="text" id="pincodeInput" placeholder="Enter Pin Code">
+        <button id="checkAvailabilityButton">Check</button>
+    </div>
+    <div id="availabilityMessage"></div>
+</div>
+ <!-- pincode script  -->
+<script>
+document.getElementById('checkAvailabilityButton').addEventListener('click', function () {
+   var pincodeInput = document.getElementById('pincodeInput');
+   var pincode = pincodeInput.value.trim().toUpperCase(); 
+   if(pincode !== '') {
+       simulateServerRequest(pincode);
+   } else {
+       document.getElementById('availabilityMessage').innerHTML = '<span class="red_message">Please enter a pincode</span>';
+   }
+});
+
+function simulateServerRequest(pincode) {
+   var availablePincodes = { {{datalist}} };
+   console.log("Entered Pincode:", pincode);
+   var message = '';
+   pincode = pincode.toUpperCase();
+
+   var found = false;
+   for (var country in availablePincodes) {
+      for (var state in availablePincodes[country]) {
+         var availableCodes = availablePincodes[country][state].map(function (code) {
+            return code.toUpperCase();
+         });
+         if (availableCodes.includes(pincode)) {
+            found = true;
+            message = '<span class="green_message">Delivery available to ' + pincode + '</span>';
+            break;
+         }
+      }
+      if (found) break;
+   }
+   if (!found) {
+      message = '<span class="red_message">Delivery not available to ' + pincode + '</span>';
+   }
+   document.getElementById('availabilityMessage').innerHTML = message;
+}
+</script>                            
+<!-- end pincode script -->

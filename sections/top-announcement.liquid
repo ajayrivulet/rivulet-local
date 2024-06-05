@@ -1,0 +1,36 @@
+ <div class="noticHeader">
+    <div class="page-width  text-center">
+      {% if section.settings.top_announcement_icon != blank %}
+       <img src="{{ section.settings.top_announcement_icon | img_url:'' }}" alt="{{ section.settings.top_announcement_icon.alt }}"/>
+      {% endif %}
+      {% if section.settings.top_announcement != blank %}
+        {{ section.settings.top_announcement }}
+      {% endif %}
+    </div> 
+</div>
+
+{% schema %}
+  {
+    "name": "Top Announcement Bar",
+     "enabled_on": {
+    "groups": ["header"]
+  },
+    "settings": [
+      {
+      "type": "image_picker",
+      "id": "top_announcement_icon",
+      "label": "Add Top Announcement Bar Icon"
+      },
+      {
+      "type": "textarea",
+      "id": "top_announcement",
+      "label": "Add Top Announcement Bar"
+     }
+    ],
+    "presets": [
+    {
+      "name": "Top Announcement Bar"
+    }
+  ]
+  }
+{% endschema %}

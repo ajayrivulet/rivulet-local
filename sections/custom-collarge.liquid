@@ -1,0 +1,217 @@
+{{ 'collage.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-modal-video.css' | asset_url | stylesheet_tag }}
+{{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="common-section homeFeaturedVideo-section bg-darkGray color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding custom-collarge">
+            <div class="container">
+                <div class="commonSecHead anim fadeInUp">
+                  {%- if section.settings.heading != blank -%}
+                    <h2>{{ section.settings.heading }}</h2>
+                   {% endif %}
+                  {%- if section.settings.button_label != blank -%}
+                    <a
+                      class="viewAll-btn" 
+                      {% if section.settings.button_link == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ section.settings.button_link }}"
+                      {% endif %}
+                    >
+                     
+                      {{ section.settings.button_label | escape }} <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="none"><script xmlns=""/><path d="M1.75391 1.9056L5.83724 5.98893L1.75391 10.0723" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg>
+                     
+                    </a>
+                  {%- endif -%}
+                </div>
+                <div class="commonSeContent">
+                    <ul class="featuredProductVideo-list list-unstyled grid-gap-20 grid-gap-xxl-30">
+                      {%- for block in section.blocks -%}
+                        <li>
+                            <div class="productCard videoCard anim fadeInUp" >
+                                <a class="productCard-thumb videoLink" data-videoType="youtube" href="{{ block.settings.video_url }}">
+                                    <div class="videoContainer"> <div class="video-placeholder"> </div> </div>
+                                    <picture >
+                                      {% if block.settings.cover_image != blank %}
+                                        <img class="lazy" src="{{ block.settings.cover_image | image_url }}" data-src="{{ block.settings.cover_image | image_url}}"  width="829" height="449" alt="{{ block.settings.description }}">
+                                        {% else %}
+                                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                                        {% endif %}
+                                    </picture>
+                                    {% if block.settings.video_url !=blank %}
+                                      <span class="video-play btn btn-xs">Play</span>
+                                    {% endif %}
+                                </a>
+                                <div class="productCard-body">
+                                  {% if block.settings.video_title_sub != blank %}
+                                   <h3 class="title" style="color:{{ block.settings.card_sub_title_color }}">{{ block.settings.video_title_sub }}</h3>
+                                  {% endif %}
+                                  {% if block.settings.video_title != blank %}
+                                    <p>{{ block.settings.video_title }}</p>
+                                  {% endif %}
+                                  {% if block.settings.video_date != blank %}
+                                    <div class="publishDate">{{ block.settings.video_date }}</div>
+                                  {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                        {%- endfor -%}
+                       
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+{% schema %}
+{
+  "name": "Custom Collage Video",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Featured video articals",
+      "label": "t:sections.collage.settings.heading.label"
+    },
+    {
+      "type": "color", 
+      "id": "collage_card_color",
+      "default": "#191F26",
+      "label": "Collage Card Color"
+    },
+     {
+      "type": "color", 
+      "id": "collage_viewall_color",
+      "default": "#FFFFFF",
+      "label": "Collage View ALl Color"
+    },
+   {
+      "type": "text",
+      "id": "button_label",
+      "default": "Button label",
+      "label": "t:sections.multicolumn.settings.button_label.label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.multicolumn.settings.button_link.label"
+    },
+    
+   
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    
+    {
+      "type": "video",
+      "name": "t:sections.collage.blocks.video.name",
+      "settings": [
+          {
+        "type": "color", 
+        "id": "card_sub_title_color",
+        "default": "#EC642F",
+        "label": "Collage Card Subtitle Color"
+      },
+        {
+          "type": "text",
+          "id": "video_title_sub",
+          "default": "Trending articles",
+          "label": "Add Video Sub Title"
+        },
+        {
+          "type": "text",
+          "id": "video_title",
+          "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          "label": "Add Video Title"
+        },
+        {
+          "type": "text",
+          "id": "video_date",
+          "default": "Feb 26, 2024",
+          "label": "Add Video Date",
+          "info": "e.g. mm-dd-yyyy (Feb 26, 2024)"
+        },
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "t:sections.collage.blocks.video.settings.cover_image.label"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+          "label": "t:sections.collage.blocks.video.settings.video_url.label",
+          "placeholder": "t:sections.collage.blocks.video.settings.video_url.placeholder",
+          "info": "t:sections.collage.blocks.video.settings.video_url.info"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "default": "Describe the video",
+          "label": "t:sections.collage.blocks.video.settings.description.label",
+          "info": "t:sections.collage.blocks.video.settings.description.info"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Custom Collage Video",
+      "blocks": [
+       
+      ]
+    }
+  ]
+}
+{% endschema %}

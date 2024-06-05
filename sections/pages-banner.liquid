@@ -1,0 +1,55 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+{% if section.settings.image != blank %}
+<section class="pageHearo py-0">
+      <div class="container">
+          <div class="innerBanner">
+              <img class="" src="{{ section.settings.image | image_url }}" data-src="{{ section.settings.image | image_url }}" width="1340" height="401" alt="Banner">
+              <div class="herOverlay">
+                 <div class="overlayContent anim fadeInUp visible">
+                    <h1 class="title title--primary inline-richtext{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+                     {{ section.settings.collection_heading }}
+                    </h1>
+                   {%- if section.settings.collection_description -%}
+                    <div class="collection-hero__description rte">{{ section.settings.collection_description }}</div>
+                  {%- endif -%}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+ {% endif %} 
+
+{% schema %}
+{
+  "name": "Pages Banner",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image-banner.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "collection_heading",
+      "label": "Enter Main collection list heading"
+    },
+    {
+      "type": "text",
+      "id": "collection_description",
+      "label": "Enter Main collection list text"
+    }
+  ],
+ 
+  "presets": [
+    {
+      "name": "Pages Banner"
+    
+    }
+  ]
+}
+{% endschema %}

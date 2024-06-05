@@ -1,0 +1,164 @@
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/jquery.slick/1.5.0/slick.css'>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/jquery.slick/1.5.0/slick-theme.css'>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<style>
+ 
+.profile_details h2{
+  color:{{section.settings.quote_color}};
+}
+
+
+</style>
+<div class="isolate {% unless section.settings.full_width %} page-width{% endunless %} section-{{ section.id }}-padding ">
+	<div class="rich-text content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} rich-text--full-width content-container--full-width{% endif %} testimonial-inner bg-lightGray">
+		<div class="header_customer">
+			<div class="quote-icon">
+				<svg width="45" height="40" viewBox="0 0 45 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M0.794922 39.2223V24.8679C0.794922 18.0649 2.40497 12.6905 5.62507 8.74471C8.89053 4.79895 13.63 2.2138 19.8434 0.989258V8.06441C15.2173 9.51572 12.1106 12.0102 10.5233 15.5477C9.70689 17.4072 9.36674 19.3348 9.5028 21.3303H20.1836V39.2223H0.794922ZM44.3494 8.06441C39.7687 9.47037 36.6847 12.0102 35.0973 15.6838C34.1902 17.634 33.8274 19.5162 34.0088 21.3303H44.6896V39.2223H25.3009V24.8679C25.3009 17.9742 26.9564 12.5771 30.2672 8.67668C33.6233 4.77628 38.3174 2.2138 44.3494 0.989258V8.06441Z"
+						fill="currentColor" />
+				</svg>
+			</div>
+            <div class="testimonial_heading commonSecHead"> <h2>{{ section.settings.testimonial_heading}}</h2></div><a href="javascript:void()" class="viewAll-btn">View all <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M1.75391 1.9056L5.83724 5.98893L1.75391 10.0723" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"></path></svg></a>         
+		</div>
+		<div class="testimonial_section testimonialSwiper ">
+			{%- for block in section.blocks -%}
+			<div class="bubble">
+                 <div class="testimonoialContainer">
+				{% if block.settings.author_discription !=blank %}
+				<div class="">
+					<p>{{ block.settings.author_discription }}</p>
+				</div>
+				{% endif %}
+				<div class="profile_section aurthor-container">
+					{% if block.settings.author_image !=blank %}
+					<div class="profile_image"><img src="{{ block.settings.author_image | image_url  }}" width="" height=""/></div>
+					{% endif %}
+					{% if block.settings.author_name !=blank %}
+					<div class="aurthor-info">
+						{% if block.settings.author_name !=blank %}
+						<h3 class="title">{{ block.settings.author_name }}</h3>
+						{% endif %}
+						{% if block.settings.author_city !=blank %}
+						<p class="aurthor-location">{{ block.settings.author_city }}</p>
+						{% endif %}
+					</div>
+					{% endif %}
+				</div>
+    			</div>
+              </div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+{% schema %}
+  {
+  "name": "Testimonial",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header","footer"]
+  },
+  "settings": [
+     {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "t:sections.rich-text.settings.full_width.label"
+    },
+   
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-7"
+    },
+    {
+      "type": "text",
+      "id": "testimonial_heading",
+      "default": "our customer says",
+      "label": "Testimonial Heading"
+    },
+    {
+      "type": "color",
+      "id": "quote_color",
+      "default": "#ec642f",
+      "label": "Quote and Author Color"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Testimonial",
+      "name": "Add Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author_name",
+          "default": "Marvin Wolff",
+          "label": "Author Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image", 
+          "label": "Author Profile"
+        },
+        {
+          "type": "text",
+          "id": "author_city",
+          "default": "Berlin, Italy",
+          "label": "Author City"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "author_discription", 
+          "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+          "label": "Author Discription"
+        }
+        
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial",
+      "blocks": [
+        
+      ]
+    }
+  ]
+}
+{% endschema %}
